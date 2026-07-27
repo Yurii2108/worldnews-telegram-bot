@@ -1,4 +1,3 @@
-.github/workflows/news.yml
 name: World News Publisher
 
 on:
