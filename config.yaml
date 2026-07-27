@@ -1,0 +1,144 @@
+settings:
+  # Maximum number of posts during one scheduled run.
+  max_posts_per_run: 3
+
+  # Number of posts on the first successful run.
+  bootstrap_posts: 3
+
+  # Ignore stories older than this.
+  max_age_hours: 36
+
+  # RSS summary length. Full articles are never copied.
+  max_summary_chars: 430
+
+  # Similar title threshold for removing duplicated coverage.
+  duplicate_similarity: 0.86
+
+  # Mark lower-ranked overflow stories as seen instead of publishing a backlog.
+  drop_overflow: true
+
+  # Keep deduplication history for this many days.
+  state_retention_days: 30
+
+  # Telegram formatting.
+  show_summary: true
+  show_publication_time: true
+  hashtag_limit: 4
+  delay_between_posts_seconds: 2
+
+# Higher weight means the source is preferred when several stories compete.
+# Disable any source by changing enabled to false.
+sources:
+  - name: BBC World
+    url: https://feeds.bbci.co.uk/news/world/rss.xml
+    weight: 4
+    enabled: true
+
+  - name: BBC Business
+    url: https://feeds.bbci.co.uk/news/business/rss.xml
+    weight: 3
+    enabled: true
+
+  - name: BBC Technology
+    url: https://feeds.bbci.co.uk/news/technology/rss.xml
+    weight: 3
+    enabled: true
+
+  - name: UN News
+    url: https://news.un.org/feed/subscribe/en/news/all/rss.xml
+    weight: 4
+    enabled: true
+
+  - name: NPR World
+    url: https://feeds.npr.org/1004/rss.xml
+    weight: 3
+    enabled: true
+
+  - name: Tagesschau
+    url: https://www.tagesschau.de/xml/rss2/
+    weight: 4
+    enabled: true
+
+  - name: Ukrainska Pravda
+    url: https://www.pravda.com.ua/rss/
+    weight: 4
+    enabled: true
+
+  - name: The Guardian World
+    url: https://www.theguardian.com/world/rss
+    weight: 2
+    enabled: true
+
+  - name: Al Jazeera
+    url: https://www.aljazeera.com/xml/rss/all.xml
+    weight: 2
+    enabled: true
+
+  - name: CBC World
+    url: https://www.cbc.ca/cmlink/rss-world
+    weight: 2
+    enabled: true
+
+# Stories containing these terms receive additional priority points.
+priority_keywords:
+  breaking: 35
+  срочно: 35
+  терміново: 35
+  attack: 24
+  атака: 24
+  Angriff: 24
+  war: 22
+  война: 22
+  війна: 22
+  earthquake: 25
+  землетрясение: 25
+  election: 18
+  выборы: 18
+  вибори: 18
+  sanctions: 16
+  санкции: 16
+  ceasefire: 22
+  перемирие: 22
+  emergency: 22
+  чрезвычай: 22
+  Ukraine: 18
+  Украина: 18
+  Україна: 18
+  Germany: 15
+  Германия: 15
+  Німеччина: 15
+  United States: 12
+  США: 12
+  European Union: 12
+  Евросоюз: 12
+  Євросоюз: 12
+  cryptocurrency: 8
+  bitcoin: 8
+  technology: 6
+
+# Remove routine entertainment, celebrity gossip, sport and promotional material.
+exclude_keywords:
+  - horoscope
+  - гороскоп
+  - celebrity gossip
+  - fashion week
+  - football transfer
+  - трансфер футбол
+  - betting
+  - ставки на спорт
+  - sponsored
+  - advertorial
+
+# Hashtags are assigned by simple keyword matching; no AI is used.
+hashtag_rules:
+  Украина: [Ukraine, Украина, Україна, Kyiv, Киев, Київ, Zelensky, Зеленский, Зеленський]
+  Германия: [Germany, Германия, Німеччина, Berlin, Берлин, Берлін, Bundestag]
+  США: [United States, USA, U.S., США, Washington, Trump]
+  Европа: [Europe, Европа, Європа, European Union, EU, Евросоюз, ЄС]
+  Мир: [world, global, international, ООН, United Nations]
+  Война: [war, война, війна, attack, атака, missile, ракета]
+  Политика: [election, elections, выборы, вибори, parliament, парламент]
+  Экономика: [economy, business, market, экономика, економіка, inflation, инфляция]
+  Технологии: [technology, tech, AI, artificial intelligence, технологии, штучний інтелект]
+  Крипто: [bitcoin, cryptocurrency, crypto, крипто]
+  ЧП: [earthquake, flood, wildfire, emergency, землетрясение, наводнение, пожар]

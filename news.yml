@@ -1,0 +1,62 @@
+name: World News Publisher
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "test = send a test post; run = collect and publish news"
+        required: true
+        default: "test"
+        type: choice
+        options:
+          - test
+          - run
+  schedule:
+    # Every 15 minutes, shifted away from the top of the hour.
+    - cron: "7,22,37,52 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: worldnews-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: "@WorldnewsUSUA"
+      MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'run' }}
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install --requirement requirements.txt
+
+      - name: Publish
+        run: python bot.py
+
+      - name: Save deduplication state
+        if: env.MODE == 'run'
+        run: |
+          if git diff --quiet -- state/seen.json; then
+            echo "No state changes."
+            exit 0
+          fi
+          git config user.name "worldnews-bot"
+          git config user.email "worldnews-bot@users.noreply.github.com"
+          git add state/seen.json
+          git commit -m "chore: update published-news state"
+          git push
